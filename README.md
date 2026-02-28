@@ -15,18 +15,6 @@ Parameter-efficient fine-tuning (PEFT) of the **Microsoft GIT** vision-language 
 * **LoRA Parameters:** `r=16`, `α=32`, with dropout enabled. 
   * *Note:* Decreasing the rank to 16 while holding α at 32 increases the scaling factor (α/r) from 1 to 2. This delivers stronger updates per learned direction while using fewer parameters, providing an ideal bias-variance trade-off for a small dataset.
 
-## Training Hyperparameters
-* **Epochs:** 15 (with `load_best_model_at_end=True` to select the checkpoint with the lowest validation loss)
-* **Learning Rate:** 5e-5 (Provides better adaptation from limited data than smaller rates)
-* **Effective Batch Size:** 8 (Per-device batch size of 2 × 4 gradient accumulation steps)
-* **Warmup Ratio:** 0.05
-* **Weight Decay:** 0.0 (LoRA naturally restricts capacity; strong regularization was unnecessary)
-
-## Evaluation 
-**Cross-Entropy Loss:** Evaluated every epoch to monitor convergence. Best-checkpoint selection relies purely on minimizing validation loss, avoiding the last epoch if it begins to overfit.
-
-**Current Limitations:** Given the tiny dataset (700 images), the model quickly learns domain vocabulary ("bird", "drawing", "cartoon") but lacks the structural exposure for complex grammar, occasionally leading to scrambled syntax on longer captions.
-
 ## How to Use (Google Colab)
 1. **Open the Notebook:** Click the "Open in Colab" badge above.
 2. **Enable GPU:** Go to `Runtime` > `Change runtime type` and select a **T4 GPU**.
